@@ -1,0 +1,203 @@
+.page-container {
+  min-height: 100vh;
+  background-color: #f5f6fa;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #2c3e50;
+  background-color: #f8f9fa;
+}
+
+.nav-links a.active {
+  color: #007bff;
+  background-color: #e7f1ff;
+}
+
+.nav-auth {
+  display: flex;
+  gap: 1rem;
+}
+
+.login-btn, .signup-btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-btn {
+  background-color: transparent;
+  border: 1px solid #007bff;
+  color: #007bff;
+}
+
+.signup-btn {
+  background-color: #007bff;
+  border: none;
+  color: white;
+}
+
+.login-btn:hover {
+  background-color: #e7f1ff;
+}
+
+.signup-btn:hover {
+  background-color: #0056b3;
+}
+
+.home-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.home-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.home-header h1 {
+  font-size: 2.5rem;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
+.home-header p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.markets-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.indices-section {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.indices-section h2 {
+  color: #1a1a1a;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  padding-left: 0.5rem;
+  border-left: 4px solid #007bff;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.indices-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1rem;
+}
+
+.indices-table th {
+  background: #f8f9fa;
+  padding: 1.2rem;
+  text-align: left;
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 2px solid #dee2e6;
+  white-space: nowrap;
+}
+
+.indices-table td {
+  padding: 1.2rem;
+  border-bottom: 1px solid #dee2e6;
+  color: #212529;
+  white-space: nowrap;
+}
+
+.indices-table tbody tr:hover {
+  background-color: #f8f9fa;
+  transition: background-color 0.2s ease;
+}
+
+.indice-nome {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.positivo {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.negativo {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 1rem 0;
+    gap: 1rem;
+  }
+
+  .nav-auth {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .home-container {
+    padding: 1rem;
+  }
+  
+  .indices-section {
+    padding: 1rem;
+  }
+  
+  .indices-table th,
+  .indices-table td {
+    padding: 0.75rem;
+  }
+}
