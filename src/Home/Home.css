@@ -1,6 +1,110 @@
 .page-container {
   min-height: 100vh;
-  background-color: #f5f6fa;
+  background-color: #0a0a0a;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Effetti Neon di Sfondo */
+.page-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(0, 123, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
+  animation: neonPulse 8s infinite alternate;
+  z-index: 0;
+}
+
+/* Strisce di Neon Animate */
+.neon-stripes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.neon-stripe {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(0, 123, 255, 0.8) 50%, 
+    transparent 100%);
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5),
+              0 0 20px rgba(0, 123, 255, 0.3);
+  animation: neonStripe 3s infinite;
+}
+
+.neon-stripe:nth-child(1) {
+  top: 10%;
+  left: -100%;
+  width: 30%;
+  animation-delay: 0s;
+}
+
+.neon-stripe:nth-child(2) {
+  top: 30%;
+  left: -100%;
+  width: 40%;
+  animation-delay: 0.5s;
+}
+
+.neon-stripe:nth-child(3) {
+  top: 50%;
+  left: -100%;
+  width: 25%;
+  animation-delay: 1s;
+}
+
+.neon-stripe:nth-child(4) {
+  top: 70%;
+  left: -100%;
+  width: 35%;
+  animation-delay: 1.5s;
+}
+
+.neon-stripe:nth-child(5) {
+  top: 90%;
+  left: -100%;
+  width: 45%;
+  animation-delay: 2s;
+}
+
+@keyframes neonStripe {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes neonPulse {
+  0% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
 }
 
 .navbar {
@@ -8,17 +112,20 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: rgba(20, 20, 20, 0.9);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   position: sticky;
   top: 0;
   z-index: 1000;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 123, 255, 0.2);
 }
 
 .nav-brand {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #2c3e50;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
 }
 
 .nav-links {
@@ -28,7 +135,7 @@
 
 .nav-links a {
   text-decoration: none;
-  color: #666;
+  color: #aaa;
   font-weight: 500;
   padding: 0.5rem 1rem;
   border-radius: 4px;
@@ -36,13 +143,15 @@
 }
 
 .nav-links a:hover {
-  color: #2c3e50;
-  background-color: #f8f9fa;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 123, 255, 0.8);
+  background-color: rgba(0, 123, 255, 0.1);
 }
 
 .nav-links a.active {
   color: #007bff;
-  background-color: #e7f1ff;
+  background-color: rgba(0, 123, 255, 0.2);
+  text-shadow: 0 0 10px rgba(0, 123, 255, 0.8);
 }
 
 .nav-auth {
@@ -71,11 +180,13 @@
 }
 
 .login-btn:hover {
-  background-color: #e7f1ff;
+  background-color: rgba(0, 123, 255, 0.1);
+  text-shadow: 0 0 10px rgba(0, 123, 255, 0.8);
 }
 
 .signup-btn:hover {
   background-color: #0056b3;
+  box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
 }
 
 .home-container {
@@ -83,6 +194,8 @@
   margin: 0 auto;
   padding: 2rem;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  position: relative;
+  z-index: 1;
 }
 
 .home-header {
@@ -92,13 +205,14 @@
 
 .home-header h1 {
   font-size: 2.5rem;
-  color: #1a1a1a;
+  color: #fff;
   margin-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
 }
 
 .home-header p {
   font-size: 1.2rem;
-  color: #666;
+  color: #aaa;
 }
 
 .markets-grid {
@@ -108,18 +222,27 @@
 }
 
 .indices-section {
-  background: #ffffff;
+  background: rgba(20, 20, 20, 0.9);
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   padding: 2rem;
+  border: 1px solid rgba(0, 123, 255, 0.2);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.indices-section:hover {
+  border-color: rgba(0, 123, 255, 0.4);
+  box-shadow: 0 0 20px rgba(0, 123, 255, 0.2);
 }
 
 .indices-section h2 {
-  color: #1a1a1a;
+  color: #fff;
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
   padding-left: 0.5rem;
   border-left: 4px solid #007bff;
+  text-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
 }
 
 .table-container {
@@ -134,40 +257,42 @@
 }
 
 .indices-table th {
-  background: #f8f9fa;
+  background: rgba(30, 30, 30, 0.9);
   padding: 1.2rem;
   text-align: left;
   font-weight: 600;
-  color: #495057;
-  border-bottom: 2px solid #dee2e6;
+  color: #fff;
+  border-bottom: 2px solid rgba(0, 123, 255, 0.3);
   white-space: nowrap;
 }
 
 .indices-table td {
   padding: 1.2rem;
-  border-bottom: 1px solid #dee2e6;
-  color: #212529;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
   white-space: nowrap;
 }
 
 .indices-table tbody tr:hover {
-  background-color: #f8f9fa;
-  transition: background-color 0.2s ease;
+  background-color: rgba(0, 123, 255, 0.1);
+  transition: all 0.3s ease;
 }
 
 .indice-nome {
   font-weight: 600;
-  color: #2c3e50;
+  color: #fff;
 }
 
 .positivo {
-  color: #28a745;
+  color: #00ff9d;
   font-weight: 600;
+  text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
 }
 
 .negativo {
-  color: #dc3545;
+  color: #ff4d4d;
   font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
 }
 
 @media (max-width: 768px) {
@@ -199,5 +324,30 @@
   .indices-table th,
   .indices-table td {
     padding: 0.75rem;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  color: #00c3ff;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(0, 195, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #00c3ff;
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }

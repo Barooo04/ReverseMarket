@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Home.css';
+import Navbar from '../components/Navbar/Navbar';
 
 const Home = () => {
   const [indiciEuropei] = useState([
@@ -85,21 +86,7 @@ const Home = () => {
 
   return (
     <div className="page-container">
-      <nav className="navbar">
-        <div className="nav-brand">ReverseMarket</div>
-        <div className="nav-links">
-          <a href="#" className="active">Dashboard</a>
-          <a href="#">Azioni</a>
-          <a href="#">Forex</a>
-          <a href="#">Crypto</a>
-          <a href="#">Analisi</a>
-        </div>
-        <div className="nav-auth">
-          <button className="login-btn">Accedi</button>
-          <button className="signup-btn">Registrati</button>
-        </div>
-      </nav>
-
+      <Navbar />
       <div className="home-container">
         <header className="home-header">
           <h1>Dashboard Mercati Globali</h1>
