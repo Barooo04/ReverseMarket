@@ -83,7 +83,7 @@ const Analisi = () => {
   };
 
   return (
-    <div className="page-container">
+    <div className="page-container-analisi">
       <Navbar />
       <div className="analisi-container">
         <div className="analisi-header">
