@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -18,21 +18,21 @@ const Navbar = () => {
       <nav className="navbar">
         <div className="nav-brand">ReverseMarket</div>
         <div className="nav-links">
-          <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
+          <a href="/" className={location.pathname === '/' ? 'active' : ''}>
             Dashboard
-          </Link>
-          <Link to="/azioni" className={location.pathname === '/azioni' ? 'active' : ''}>
+          </a>
+          <a href="/azioni" className={location.pathname === '/azioni' ? 'active' : ''}>
             Azioni
-          </Link>
-          <Link to="/forex" className={location.pathname === '/forex' ? 'active' : ''}>
+          </a>
+          <a href="/forex" className={location.pathname === '/forex' ? 'active' : ''}>
             Forex
-          </Link>
-          <Link to="/crypto" className={location.pathname === '/crypto' ? 'active' : ''}>
+          </a>
+          <a href="/crypto" className={location.pathname === '/crypto' ? 'active' : ''}>
             Crypto
-          </Link>
-          <Link to="/analisi" className={location.pathname === '/analisi' ? 'active' : ''}>
+          </a>
+          <a href="/analisi" className={location.pathname === '/analisi' ? 'active' : ''}>
             Analisi
-          </Link>
+          </a>
         </div>
       </nav>
     </>
