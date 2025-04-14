@@ -3,6 +3,13 @@ import './Analisi.css';
 import Navbar from '../../components/Navbar/Navbar';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
+// Polyfill per isNumber
+if (typeof window !== 'undefined') {
+  window.isNumber = function(value) {
+    return typeof value === 'number' && !isNaN(value);
+  };
+}
+
 const Analisi = () => {
   const [timeFrame, setTimeFrame] = useState('1D');
   
