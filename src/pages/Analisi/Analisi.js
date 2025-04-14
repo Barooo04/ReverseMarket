@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Analisi.css';
 import Navbar from '../../components/Navbar/Navbar';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -80,6 +80,28 @@ const Analisi = () => {
       );
     }
     return null;
+  };
+
+  const ChartWrapper = ({ children, data }) => {
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+      setIsClient(true);
+    }, []);
+
+    if (!isClient) {
+      return <div>Caricamento grafico...</div>;
+    }
+
+    if (!data || data.length === 0) {
+      return <div>Nessun dato disponibile</div>;
+    }
+
+    return (
+      <ResponsiveContainer width="100%" height={400}>
+        {children}
+      </ResponsiveContainer>
+    );
   };
 
   return (
@@ -172,7 +194,7 @@ const Analisi = () => {
             </div>
             <div className="analysis-content">
               <div className="chart-container">
-                <ResponsiveContainer width="100%" height={400}>
+                <ChartWrapper data={datiGrafici[timeFrame]}>
                   <LineChart data={datiGrafici[timeFrame]} margin={{ top: 10, right: 10, left: 0, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.1)" />
                     <XAxis 
@@ -196,7 +218,7 @@ const Analisi = () => {
                       activeDot={{ r: 8, fill: '#00c3ff' }}
                     />
                   </LineChart>
-                </ResponsiveContainer>
+                </ChartWrapper>
               </div>
               <div className="indicators">
                 <div className="indicator-group">

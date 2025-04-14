@@ -1,7 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Azioni.css';
 import Navbar from '../../components/Navbar/Navbar';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+
+const ChartWrapper = ({ children, data }) => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return <div>Caricamento grafico...</div>;
+  }
+
+  if (!data || data.length === 0) {
+    return <div>Nessun dato disponibile</div>;
+  }
+
+  return (
+    <ResponsiveContainer width="100%" height={400}>
+      {children}
+    </ResponsiveContainer>
+  );
+};
 
 const Azioni = () => {
   const [azioniPopolari] = useState([
@@ -61,7 +83,7 @@ const Azioni = () => {
           <div className="chart-section">
             <h2>FTSE MIB - Andamento Giornaliero</h2>
             <div className="chart-container">
-              <ResponsiveContainer width="100%" height={300}>
+              <ChartWrapper data={datiGrafico}>
                 <LineChart data={datiGrafico}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.1)" />
                   <XAxis 
@@ -92,7 +114,7 @@ const Azioni = () => {
                     activeDot={{ r: 8, fill: '#00c3ff' }}
                   />
                 </LineChart>
-              </ResponsiveContainer>
+              </ChartWrapper>
             </div>
           </div>
 
