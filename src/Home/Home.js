@@ -1,88 +1,134 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Home.css';
 import Navbar from '../components/Navbar/Navbar';
+import axios from 'axios';
+
+const euronextConfig = [
+  { nome: 'CAC 40', endpoint: 'cac40' },
+  { nome: 'AEX', endpoint: 'aex' },
+  { nome: 'FTSE MIB', endpoint: 'ftsemib' },
+  { nome: 'BEL 20', endpoint: 'bel20' },
+  { nome: 'PSI 20', endpoint: 'psi20' },
+];
+
+const lseConfig = [
+  { nome: 'FTSE 100', endpoint: 'ftse100' },
+  { nome: 'FTSE 250', endpoint: 'ftse250' },
+];
+
+const deutscheBorseConfig = [
+  { nome: 'DAX 40', endpoint: 'dax40' },
+];
+
+const swissConfig = [
+  { nome: 'SMI', endpoint: 'smi' },
+];
+
+const bmeConfig = [
+  { nome: 'IBEX 35', endpoint: 'ibex35' },
+];
+
+const usaConfig = [
+  { nome: 'S&P 500', endpoint: 'sp500' },
+  { nome: 'Nasdaq', endpoint: 'nasdaq' },
+  { nome: 'Dow Jones', endpoint: 'dowjones' },
+  { nome: 'S&P 500 VIX', endpoint: 'vix' },
+];
+
+// Imposta la base URL in base all'ambiente
+const BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'https://reversemarketbackend.onrender.com'
+  : 'http://localhost:3001';
+
+const fetchIndice = async (endpoint) => {
+  try {
+    const { data } = await axios.get(`${BASE_URL}/api/${endpoint}`);
+    return data;
+  } catch (error) {
+    return null;
+  }
+};
+
+const useIndici = (config, timeZone = 'Europe/Rome') => {
+  const [dati, setDati] = useState([]);
+  useEffect(() => {
+    let isMounted = true;
+    const fetchAll = async () => {
+      const now = new Date();
+      const oraLocale = now.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', timeZone });
+      const results = await Promise.all(
+        config.map(async (indice) => {
+          const data = await fetchIndice(indice.endpoint);
+          if (!data || data.status === 'error') {
+            return { nome: indice.nome, nonDisponibile: true, timestamp: oraLocale };
+          }
+          return {
+            nome: indice.nome,
+            ultimo: data.regularMarketPrice ?? '-',
+            variazione: data.regularMarketChangePercent !== undefined ? `${data.regularMarketChangePercent.toFixed(2)}%` : '-',
+            max: data.regularMarketDayHigh ?? '-',
+            min: data.regularMarketDayLow ?? '-',
+            timestamp: oraLocale,
+            nonDisponibile: false
+          };
+        })
+      );
+      if (isMounted) {
+        setDati(results);
+      }
+    };
+    fetchAll();
+    const interval = setInterval(fetchAll, 2000);
+    return () => { isMounted = false; clearInterval(interval); };
+  }, [config, timeZone]);
+  return dati;
+};
+
+const renderTable = (titolo, dati) => (
+  <section className="indices-section">
+    <h2>{titolo}</h2>
+    <div className="table-container">
+      <table className="indices-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Ultimo</th>
+            <th>Var %</th>
+            <th>Max</th>
+            <th>Min</th>
+            <th>Ora</th>
+          </tr>
+        </thead>
+        <tbody>
+          {dati.map((indice, index) => (
+            <tr key={index}>
+              <td className="indice-nome">{indice.nome}</td>
+              {indice.nonDisponibile ? (
+                <td colSpan={5} style={{ textAlign: 'center', color: 'gray' }}>Non disponibile</td>
+              ) : (
+                <>
+                  <td className={indice.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{indice.ultimo}</td>
+                  <td className={indice.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{indice.variazione}</td>
+                  <td className={indice.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{indice.max}</td>
+                  <td className={indice.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{indice.min}</td>
+                  <td className={indice.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{indice.timestamp}</td>
+                </>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+);
 
 const Home = () => {
-  const [indiciEuropei] = useState([
-    {
-      nome: 'FTSE MIB',
-      ultimo: '33.939,25',
-      variazione: '+0,85%',
-      max: '33.962,00',
-      min: '33.647,50',
-      timestamp: '17:35:00'
-    },
-    {
-      nome: 'DAX 40',
-      ultimo: '18.163,05',
-      variazione: '+0,32%',
-      max: '18.178,47',
-      min: '18.089,34',
-      timestamp: '17:35:00'
-    },
-    {
-      nome: 'CAC 40',
-      ultimo: '8.164,35',
-      variazione: '+0,45%',
-      max: '8.170,22',
-      min: '8.125,18',
-      timestamp: '17:35:00'
-    },
-  ]);
-
-  const [indiciUSA] = useState([
-    {
-      nome: 'S&P 500',
-      ultimo: '5.234,18',
-      variazione: '+0,56%',
-      max: '5.245,23',
-      min: '5.198,85',
-      timestamp: '17:35:00'
-    },
-    {
-      nome: 'Nasdaq',
-      ultimo: '16.428,82',
-      variazione: '-0,25%',
-      max: '16.449,52',
-      min: '16.379,45',
-      timestamp: '17:35:00'
-    },
-    {
-      nome: 'Dow Jones',
-      ultimo: '39.282,33',
-      variazione: '+0,68%',
-      max: '39.299,20',
-      min: '39.122,50',
-      timestamp: '17:35:00'
-    },
-  ]);
-
-  const [forex] = useState([
-    {
-      nome: 'EUR/USD',
-      ultimo: '1,0831',
-      variazione: '-0,12%',
-      max: '1,0845',
-      min: '1,0822',
-      timestamp: '17:35:00'
-    },
-    {
-      nome: 'GBP/USD',
-      ultimo: '1,2642',
-      variazione: '+0,25%',
-      max: '1,2658',
-      min: '1,2612',
-      timestamp: '17:35:00'
-    },
-    {
-      nome: 'USD/JPY',
-      ultimo: '151,42',
-      variazione: '+0,32%',
-      max: '151,55',
-      min: '151,12',
-      timestamp: '17:35:00'
-    },
-  ]);
+  const euronext = useIndici(euronextConfig, 'Europe/Rome');
+  const lse = useIndici(lseConfig, 'Europe/London');
+  const deutscheBorse = useIndici(deutscheBorseConfig, 'Europe/Berlin');
+  const swiss = useIndici(swissConfig, 'Europe/Zurich');
+  const bme = useIndici(bmeConfig, 'Europe/Madrid');
+  const usa = useIndici(usaConfig, 'America/New_York');
 
   return (
     <div className="page-container">
@@ -90,105 +136,15 @@ const Home = () => {
       <div className="home-container">
         <header className="home-header">
           <h1>Dashboard Mercati Globali</h1>
-          <p>Monitora in tempo reale l'andamento dei mercati finanziari</p>
+          <p>La tua piattaforma per l'analisi comportamentale dei mercati finanziari, la piattaforma per stare sempre in serenità</p>
         </header>
-
         <div className="markets-grid">
-          <section className="indices-section">
-            <h2>Indici Europei</h2>
-            <div className="table-container">
-              <table className="indices-table">
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>Ultimo</th>
-                    <th>Var %</th>
-                    <th>Max</th>
-                    <th>Min</th>
-                    <th>Ora</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {indiciEuropei.map((indice, index) => (
-                    <tr key={index}>
-                      <td className="indice-nome">{indice.nome}</td>
-                      <td>{indice.ultimo}</td>
-                      <td className={indice.variazione.includes('+') ? 'positivo' : 'negativo'}>
-                        {indice.variazione}
-                      </td>
-                      <td>{indice.max}</td>
-                      <td>{indice.min}</td>
-                      <td>{indice.timestamp}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <section className="indices-section">
-            <h2>Indici USA</h2>
-            <div className="table-container">
-              <table className="indices-table">
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>Ultimo</th>
-                    <th>Var %</th>
-                    <th>Max</th>
-                    <th>Min</th>
-                    <th>Ora</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {indiciUSA.map((indice, index) => (
-                    <tr key={index}>
-                      <td className="indice-nome">{indice.nome}</td>
-                      <td>{indice.ultimo}</td>
-                      <td className={indice.variazione.includes('+') ? 'positivo' : 'negativo'}>
-                        {indice.variazione}
-                      </td>
-                      <td>{indice.max}</td>
-                      <td>{indice.min}</td>
-                      <td>{indice.timestamp}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <section className="indices-section">
-            <h2>Forex Principali</h2>
-            <div className="table-container">
-              <table className="indices-table">
-                <thead>
-                  <tr>
-                    <th>Coppia</th>
-                    <th>Ultimo</th>
-                    <th>Var %</th>
-                    <th>Max</th>
-                    <th>Min</th>
-                    <th>Ora</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {forex.map((coppia, index) => (
-                    <tr key={index}>
-                      <td className="indice-nome">{coppia.nome}</td>
-                      <td>{coppia.ultimo}</td>
-                      <td className={coppia.variazione.includes('+') ? 'positivo' : 'negativo'}>
-                        {coppia.variazione}
-                      </td>
-                      <td>{coppia.max}</td>
-                      <td>{coppia.min}</td>
-                      <td>{coppia.timestamp}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
+          {renderTable('Euronext', euronext)}
+          {renderTable('London Stock Exchange (LSE) – Regno Unito', lse)}
+          {renderTable('Deutsche Börse (Xetra/Francoforte) – Germania', deutscheBorse)}
+          {renderTable('SIX Swiss Exchange – Svizzera', swiss)}
+          {renderTable('BME – Borsa di Madrid (Spagna)', bme)}
+          {renderTable('USA', usa)}
         </div>
       </div>
     </div>

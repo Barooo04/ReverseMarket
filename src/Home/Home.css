@@ -5,13 +5,6 @@
   overflow: hidden;
 }
 
-.page-container-analisi {
-  min-height: 100vh;
-  background-color: #0a0a0a;
-  position: relative;
-  overflow: hidden;
-}
-
 /* Effetti Neon di Sfondo */
 .page-container::before {
   content: '';
@@ -291,13 +284,13 @@
 }
 
 .positivo {
-  color: #00ff9d;
+  color: #00ff9d !important;
   font-weight: 600;
   text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
 }
 
 .negativo {
-  color: #ff4d4d;
+  color: #ff4d4d !important;
   font-weight: 600;
   text-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
 }

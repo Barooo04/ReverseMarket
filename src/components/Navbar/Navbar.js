@@ -1,6 +1,7 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
+import logo from '../../Home/reverselogoinvert.png';
 
 const Navbar = () => {
   const location = useLocation();
@@ -16,23 +17,16 @@ const Navbar = () => {
       </div>
 
       <nav className="navbar">
-        <div className="nav-brand">ReverseMarket</div>
+        <div className="nav-brand">
+          <img src={logo} alt="ReverseMarket Logo" className="nav-logo" />
+        </div>
         <div className="nav-links">
-          <a href="/" className={location.pathname === '/' ? 'active' : ''}>
+          <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
             Dashboard
-          </a>
-          <a href="/azioni" className={location.pathname === '/azioni' ? 'active' : ''}>
-            Azioni
-          </a>
-          <a href="/forex" className={location.pathname === '/forex' ? 'active' : ''}>
-            Forex
-          </a>
-          <a href="/crypto" className={location.pathname === '/crypto' ? 'active' : ''}>
-            Crypto
-          </a>
-          <a href="/analisi" className={location.pathname === '/analisi' ? 'active' : ''}>
-            Analisi
-          </a>
+          </Link>
+          <Link to="/futures" className={location.pathname === '/futures' ? 'active' : ''}>
+            Futures
+          </Link>
         </div>
       </nav>
     </>
