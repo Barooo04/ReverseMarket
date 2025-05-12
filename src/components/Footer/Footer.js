@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="footer-content">
         <div className="footer-section">
           <h3>ReverseMarket</h3>
-          <p>La tua piattaforma per l'analisi dei mercati finanziari</p>
+          <p>La tua piattaforma per l'analisi comportamentale dei mercati finanziari, la piattaforma per stare sempre in serenità</p>
         </div>
         
         <div className="footer-section">
