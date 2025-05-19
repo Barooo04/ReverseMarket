@@ -24,10 +24,19 @@ const Navbar = () => {
         <div className="nav-brand">
           <img src={logo} alt="ReverseMarket Logo" className="nav-logo" />
         </div>
-        <button className={`hamburger${menuOpen ? ' open' : ''}`} onClick={handleHamburgerClick} aria-label="Menu">
-          <span></span>
-          <span></span>
-          <span></span>
+        <button className="hamburger" onClick={handleHamburgerClick} aria-label="Menu">
+          {menuOpen ? (
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="10" y1="10" x2="30" y2="30" stroke="#00c3ff" strokeWidth="4" strokeLinecap="round" />
+              <line x1="30" y1="10" x2="10" y2="30" stroke="#00c3ff" strokeWidth="4" strokeLinecap="round" />
+            </svg>
+          ) : (
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="8" y1="12" x2="32" y2="12" stroke="#00c3ff" strokeWidth="4" strokeLinecap="round" />
+              <line x1="8" y1="20" x2="32" y2="20" stroke="#00c3ff" strokeWidth="4" strokeLinecap="round" />
+              <line x1="8" y1="28" x2="32" y2="28" stroke="#00c3ff" strokeWidth="4" strokeLinecap="round" />
+            </svg>
+          )}
         </button>
         <div className={`nav-links${menuOpen ? ' open' : ''}`}>
           <Link to="/" className={location.pathname === '/' ? 'active' : ''} onClick={handleLinkClick}>

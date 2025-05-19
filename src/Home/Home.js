@@ -104,8 +104,8 @@ const renderCompactList = (dati) => (
           <span style={{ color: 'gray', flex: '0 0 60%', textAlign: 'right', fontSize: '0.98rem' }}>Non disponibile</span>
         ) : (
           <>
-            <span className="compact-indice-ultimo">{indice.ultimo}</span>
-            <span className={`compact-indice-var ${Number(indice.variazione.replace('%','').replace(',','.')) >= 0 ? 'positivo' : 'negativo'}`}>{indice.variazione}</span>
+            <span className={`compact-indice-ultimo${indice.nome === 'S&P 500 VIX' ? ' negativo' : ' positivo'}`}>{indice.ultimo}</span>
+            <span className={`compact-indice-var${indice.nome === 'S&P 500 VIX' ? ' negativo' : ' positivo'}`}>{indice.variazione}</span>
           </>
         )}
       </li>
