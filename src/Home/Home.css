@@ -325,6 +325,91 @@
   .indices-table td {
     padding: 0.75rem;
   }
+
+  .indices-table, .indices-table thead, .indices-table tbody, .indices-table tr, .indices-table th, .indices-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .indices-table thead {
+    display: none;
+  }
+
+  .indices-table tr {
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    background: rgba(30, 30, 30, 0.9);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    padding: 1rem 0.5rem;
+  }
+
+  .indices-table td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+    min-height: 40px;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .indices-table td:before {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    font-weight: 600;
+    color: #00c3ff;
+    content: attr(data-label);
+    text-align: left;
+  }
+
+  .compact-indices-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .compact-indice-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.7rem;
+    background: rgba(30, 30, 30, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+    font-size: 1.05rem;
+  }
+  .compact-indice-nome {
+    font-weight: 600;
+    color: #fff;
+    flex: 1 1 40%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .compact-indice-ultimo {
+    color: #00ff9d;
+    font-weight: 500;
+    margin-left: 1.2rem;
+    flex: 0 0 30%;
+    text-align: right;
+  }
+  .compact-indice-var {
+    margin-left: 1.2rem;
+    flex: 0 0 25%;
+    text-align: right;
+    font-weight: 600;
+  }
+  .compact-indice-var.positivo {
+    color: #00ff9d;
+    text-shadow: 0 0 8px rgba(0,255,157,0.3);
+  }
+  .compact-indice-var.negativo {
+    color: #ff4d4d;
+    text-shadow: 0 0 8px rgba(255,77,77,0.3);
+  }
 }
 
 .loading-container {

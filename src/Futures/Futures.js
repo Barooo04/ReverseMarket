@@ -31,9 +31,39 @@ const formatNumber = (num) => {
   return num.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
 
+// Hook per rilevare se siamo su mobile
+const useIsMobile = (breakpoint = 768) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= breakpoint);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= breakpoint);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [breakpoint]);
+  return isMobile;
+};
+
+const renderCompactFuturesList = (futures) => (
+  <ul className="compact-futures-list">
+    {futures.map((future, idx) => (
+      <li className="compact-future-item" key={idx}>
+        <span className="compact-future-nome">{future.nome}</span>
+        {future.ultimo === 'N/A' ? (
+          <span style={{ color: 'gray', flex: '0 0 60%', textAlign: 'right', fontSize: '0.98rem' }}>Non disponibile</span>
+        ) : (
+          <>
+            <span className="compact-future-ultimo">{future.ultimo}</span>
+            <span className={`compact-future-var ${Number(future.varPerc.replace('%','').replace(',','.')) >= 0 ? 'positivo' : 'negativo'}`}>{future.varPerc}</span>
+          </>
+        )}
+      </li>
+    ))}
+  </ul>
+);
+
 const Futures = () => {
   const [selectedTab, setSelectedTab] = useState('prezzo');
   const [futures, setFutures] = useState([]);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const fetchFutures = async () => {
@@ -100,34 +130,36 @@ const Futures = () => {
         <div className="futures-grid">
           <section className="futures-section">
             <div className="table-container">
-              <table className="futures-table">
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>Mese</th>
-                    <th>Ultimo</th>
-                    <th>Massimo</th>
-                    <th>Minimo</th>
-                    <th>Var.</th>
-                    <th>Var. %</th>
-                    <th>Ora</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {futures.map((future, index) => (
-                    <tr key={index}>
-                      <td className="future-nome">{future.nome}</td>
-                      <td>{future.mese}</td>
-                      <td className={future.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{future.ultimo}</td>
-                      <td className={future.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{future.massimo}</td>
-                      <td className={future.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{future.minimo}</td>
-                      <td className={future.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{future.var}</td>
-                      <td className={future.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{future.varPerc}</td>
-                      <td>{future.ora}</td>
+              {isMobile ? renderCompactFuturesList(futures) : (
+                <table className="futures-table">
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>Mese</th>
+                      <th>Ultimo</th>
+                      <th>Massimo</th>
+                      <th>Minimo</th>
+                      <th>Var.</th>
+                      <th>Var. %</th>
+                      <th>Ora</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {futures.map((future, index) => (
+                      <tr key={index}>
+                        <td className="future-nome">{future.nome}</td>
+                        <td>{future.mese}</td>
+                        <td className={future.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{future.ultimo}</td>
+                        <td className={future.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{future.massimo}</td>
+                        <td className={future.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{future.minimo}</td>
+                        <td className={future.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{future.var}</td>
+                        <td className={future.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{future.varPerc}</td>
+                        <td>{future.ora}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
           </section>
         </div>
