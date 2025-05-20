@@ -20,6 +20,10 @@ const symbolNameMap = {
   '^VIX': 'S&P 500 VIX',
 };
 
+const BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'https://reversemarketbackend.onrender.com'
+  : 'http://localhost:3001';
+
 const IndiceDetail = () => {
   const { symbol } = useParams();
   const [data, setData] = useState([]);
@@ -31,7 +35,7 @@ const IndiceDetail = () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3001'}/api/history/${encodeURIComponent(symbol)}`);
+        const res = await fetch(`${BASE_URL}/api/history/${encodeURIComponent(symbol)}`);
         const json = await res.json();
         if (Array.isArray(json)) {
           setData(json.map(d => ({
