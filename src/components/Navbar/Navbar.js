@@ -22,7 +22,9 @@ const Navbar = () => {
 
       <nav className="navbar">
         <div className="nav-brand">
-          <img src={logo} alt="ReverseMarket Logo" className="nav-logo" />
+          <Link to="/" onClick={handleLinkClick} style={{ display: 'flex', alignItems: 'center' }}>
+            <img src={logo} alt="ReverseMarket Logo" className="nav-logo" />
+          </Link>
         </div>
         <button className="hamburger" onClick={handleHamburgerClick} aria-label="Menu">
           {menuOpen ? (

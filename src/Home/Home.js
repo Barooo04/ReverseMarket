@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Home.css';
 import Navbar from '../components/Navbar/Navbar';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const euronextConfig = [
   { nome: 'CAC 40', endpoint: 'cac40' },
@@ -95,10 +96,32 @@ const useIsMobile = (breakpoint = 768) => {
   return isMobile;
 };
 
-const renderCompactList = (dati) => (
+const symbolMap = {
+  'CAC 40': '^FCHI',
+  'AEX': '^AEX',
+  'FTSE MIB': 'FTSEMIB.MI',
+  'BEL 20': '^BFX',
+  'PSI 20': '^PSI20',
+  'FTSE 100': '^FTSE',
+  'FTSE 250': '^FTMC',
+  'DAX 40': '^GDAXI',
+  'SMI': '^SSMI',
+  'IBEX 35': '^IBEX',
+  'S&P 500': '^GSPC',
+  'Nasdaq': '^IXIC',
+  'Dow Jones': '^DJI',
+  'S&P 500 VIX': '^VIX',
+};
+
+const renderCompactList = (dati, handleRowClick) => (
   <ul className="compact-indices-list">
     {dati.map((indice, idx) => (
-      <li className="compact-indice-item" key={idx}>
+      <li
+        className="compact-indice-item"
+        key={idx}
+        style={{ cursor: symbolMap[indice.nome] ? 'pointer' : 'default' }}
+        onClick={() => symbolMap[indice.nome] && handleRowClick(symbolMap[indice.nome])}
+      >
         <span className="compact-indice-nome">{indice.nome}</span>
         {indice.nonDisponibile ? (
           <span style={{ color: 'gray', flex: '0 0 60%', textAlign: 'right', fontSize: '0.98rem' }}>Non disponibile</span>
@@ -113,11 +136,11 @@ const renderCompactList = (dati) => (
   </ul>
 );
 
-const renderTable = (titolo, dati, isMobile) => (
+const renderTable = (titolo, dati, isMobile, handleRowClick) => (
   <section className="indices-section">
     <h2>{titolo}</h2>
     <div className="table-container">
-      {isMobile ? renderCompactList(dati) : (
+      {isMobile ? renderCompactList(dati, handleRowClick) : (
         <table className="indices-table">
           <thead>
             <tr>
@@ -131,7 +154,7 @@ const renderTable = (titolo, dati, isMobile) => (
           </thead>
           <tbody>
             {dati.map((indice, index) => (
-              <tr key={index}>
+              <tr key={index} style={{ cursor: symbolMap[indice.nome] ? 'pointer' : 'default' }} onClick={() => symbolMap[indice.nome] && handleRowClick(symbolMap[indice.nome])}>
                 <td className="indice-nome" data-label="Nome">{indice.nome}</td>
                 {indice.nonDisponibile ? (
                   <td colSpan={5} style={{ textAlign: 'center', color: 'gray' }}>Non disponibile</td>
@@ -161,6 +184,11 @@ const Home = () => {
   const bme = useIndici(bmeConfig, 'Europe/Madrid');
   const usa = useIndici(usaConfig, 'America/New_York');
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+
+  const handleRowClick = (symbol) => {
+    navigate(`/indice/${encodeURIComponent(symbol)}`);
+  };
 
   return (
     <div className="page-container">
@@ -171,12 +199,12 @@ const Home = () => {
           <p>La tua piattaforma per l'analisi comportamentale dei mercati finanziari, la piattaforma per stare sempre in serenità</p>
         </header>
         <div className="markets-grid">
-          {renderTable('Euronext', euronext, isMobile)}
-          {renderTable('London Stock Exchange (LSE) – Regno Unito', lse, isMobile)}
-          {renderTable('Deutsche Börse (Xetra/Francoforte) – Germania', deutscheBorse, isMobile)}
-          {renderTable('SIX Swiss Exchange – Svizzera', swiss, isMobile)}
-          {renderTable('BME – Borsa di Madrid (Spagna)', bme, isMobile)}
-          {renderTable('USA', usa, isMobile)}
+          {renderTable('Euronext', euronext, isMobile, handleRowClick)}
+          {renderTable('London Stock Exchange (LSE) – Regno Unito', lse, isMobile, handleRowClick)}
+          {renderTable('Deutsche Börse (Xetra/Francoforte) – Germania', deutscheBorse, isMobile, handleRowClick)}
+          {renderTable('SIX Swiss Exchange – Svizzera', swiss, isMobile, handleRowClick)}
+          {renderTable('BME – Borsa di Madrid (Spagna)', bme, isMobile, handleRowClick)}
+          {renderTable('USA', usa, isMobile, handleRowClick)}
         </div>
       </div>
     </div>
