@@ -4,6 +4,7 @@ import Home from './Home/Home';
 import Footer from './components/Footer/Footer';
 import Futures from './Futures/Futures';
 import IndiceDetail from './pages/IndiceDetail';
+import Azioni from './pages/Azioni';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/futures" element={<Futures />} />
+          <Route path="/azioni" element={<Azioni />} />
           <Route path="/indice/:symbol" element={<IndiceDetail />} />
         </Routes>
         <Footer />

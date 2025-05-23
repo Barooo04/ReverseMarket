@@ -12,7 +12,6 @@ const FUTURES_LIST = [
   { nome: 'US 500', simbolo: 'ES', endpoint: 'us500', mese: 'Giu 2025' },
   { nome: 'US Tech 100', simbolo: 'NQ', endpoint: 'nasdaq100', mese: 'Giu 2025' },
   { nome: 'US 2000', simbolo: 'RTY', endpoint: 'us2000', mese: 'Giu 2025' },
-  { nome: 'S&P 500 VIX', simbolo: 'VX', endpoint: 'vix', mese: 'Mag 2025' },
   { nome: 'DAX', simbolo: 'FDAX', endpoint: 'dax', mese: 'Giu 2025' },
   { nome: 'CAC 40', simbolo: 'FCE', endpoint: 'cac40', mese: 'Mag 2025' },
   { nome: 'FTSE 100', simbolo: 'Z', endpoint: 'ftse100', mese: 'Giu 2025' },
@@ -82,9 +81,7 @@ const Futures = () => {
               varPerc: data.regularMarketChangePercent !== undefined && data.regularMarketChangePercent !== null
                 ? (data.regularMarketChangePercent > 0 ? '+' : '') + data.regularMarketChangePercent.toFixed(2) + '%'
                 : 'N/A',
-              ora: data.regularMarketTime
-                ? new Date(data.regularMarketTime * 1000).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
-                : '',
+              ora: data.ora || '-',
             };
           } catch (e) {
             return {
@@ -95,7 +92,7 @@ const Futures = () => {
               minimo: 'N/A',
               var: 'N/A',
               varPerc: 'N/A',
-              ora: '',
+              ora: '-',
             };
           }
         })
@@ -154,7 +151,7 @@ const Futures = () => {
                         <td className={future.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{future.minimo}</td>
                         <td className={future.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{future.var}</td>
                         <td className={future.nome === 'S&P 500 VIX' ? 'negativo' : 'positivo'}>{future.varPerc}</td>
-                        <td>{future.ora}</td>
+                        <td className="positivo">{future.ora}</td>
                       </tr>
                     ))}
                   </tbody>

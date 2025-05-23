@@ -176,6 +176,23 @@ const renderTable = (titolo, dati, isMobile, handleRowClick) => (
   </section>
 );
 
+const DisclaimerPopup = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="disclaimer-overlay">
+      <div className="disclaimer-popup">
+        <button className="disclaimer-close" onClick={onClose}>×</button>
+        <h2>DISCLAIMER</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+      </div>
+    </div>
+  );
+};
+
 const Home = () => {
   const euronext = useIndici(euronextConfig, 'Europe/Rome');
   const lse = useIndici(lseConfig, 'Europe/London');
@@ -185,6 +202,15 @@ const Home = () => {
   const usa = useIndici(usaConfig, 'America/New_York');
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowDisclaimer(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleRowClick = (symbol) => {
     navigate(`/indice/${encodeURIComponent(symbol)}`);
@@ -194,17 +220,18 @@ const Home = () => {
     <div className="page-container">
       <Navbar />
       <div className="home-container">
+        <DisclaimerPopup isOpen={showDisclaimer} onClose={() => setShowDisclaimer(false)} />
         <header className="home-header">
           <h1>Dashboard Mercati Globali</h1>
           <p>La tua piattaforma per l'analisi comportamentale dei mercati finanziari, la piattaforma per stare sempre in serenità</p>
         </header>
         <div className="markets-grid">
           {renderTable('Euronext', euronext, isMobile, handleRowClick)}
+          {renderTable('USA', usa, isMobile, handleRowClick)}
           {renderTable('London Stock Exchange (LSE) – Regno Unito', lse, isMobile, handleRowClick)}
           {renderTable('Deutsche Börse (Xetra/Francoforte) – Germania', deutscheBorse, isMobile, handleRowClick)}
           {renderTable('SIX Swiss Exchange – Svizzera', swiss, isMobile, handleRowClick)}
           {renderTable('BME – Borsa di Madrid (Spagna)', bme, isMobile, handleRowClick)}
-          {renderTable('USA', usa, isMobile, handleRowClick)}
         </div>
       </div>
     </div>

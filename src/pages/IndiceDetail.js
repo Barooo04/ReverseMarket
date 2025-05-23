@@ -68,8 +68,8 @@ const IndiceDetail = () => {
               <CartesianGrid strokeDasharray="3 3" stroke="#222" />
               <XAxis dataKey="date" minTickGap={30} tick={{ fill: '#aaa', fontSize: 12 }} />
               <YAxis domain={['auto', 'auto']} tick={{ fill: '#aaa', fontSize: 12 }} />
-              <Tooltip contentStyle={{ background: '#111', border: '1px solid #00c3ff', color: '#fff' }} labelStyle={{ color: '#00c3ff' }} />
-              <Line type="monotone" dataKey="close" stroke="#00c3ff" strokeWidth={2} dot={false} />
+              <Tooltip contentStyle={{ background: '#111', border: '1px solid #00ff00', color: '#fff' }} labelStyle={{ color: '#00ff00' }} />
+              <Line type="monotone" dataKey="close" stroke="#00ff00" strokeWidth={2} dot={false} />
             </LineChart>
           </ResponsiveContainer>
         )}

@@ -47,6 +47,9 @@ const Navbar = () => {
           <Link to="/futures" className={location.pathname === '/futures' ? 'active' : ''} onClick={handleLinkClick}>
             Futures
           </Link>
+          <Link to="/azioni" className={location.pathname === '/azioni' ? 'active' : ''} onClick={handleLinkClick}>
+            Azioni
+          </Link>
         </div>
       </nav>
     </>
