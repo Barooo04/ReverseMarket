@@ -35,17 +35,25 @@ const IndiceDetail = () => {
       setLoading(true);
       setError(null);
       try {
+        console.log(`[DEBUG] Richiesta dati per ${symbol}`);
         const res = await fetch(`${BASE_URL}/api/history/${encodeURIComponent(symbol)}`);
         const json = await res.json();
-        if (Array.isArray(json)) {
-          setData(json.map(d => ({
-            date: d.date ? d.date.substring(0, 10) : '',
-            close: d.close
-          })).filter(d => d.close !== null));
+        console.log(`[DEBUG] Risposta ricevuta:`, json);
+        
+        if (Array.isArray(json) && json.length > 0) {
+          const formattedData = json.map(d => ({
+            date: d.date,
+            close: parseFloat(d.close)
+          })).filter(d => !isNaN(d.close));
+          
+          console.log(`[DEBUG] Dati formattati:`, formattedData);
+          setData(formattedData);
         } else {
+          console.error(`[ERROR] Dati non validi:`, json);
           setError('Dati non disponibili');
         }
       } catch (e) {
+        console.error(`[ERROR] Errore nel caricamento dati:`, e);
         setError('Errore nel caricamento dati');
       }
       setLoading(false);
